@@ -14,7 +14,7 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children, }: Readonly<{ children: React.ReactNode; }>) {
   return (
-    <html lang="en">
+    <html lang="pt-br">
       <body className={`${inter.variable} antialiased`}>{children}</body>
     </html>
   );
