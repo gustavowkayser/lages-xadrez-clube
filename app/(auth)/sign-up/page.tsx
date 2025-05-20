@@ -1,13 +1,14 @@
 "use client";
 
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import Form from "next/form";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
-import registerAction from "@/app/(auth)/sign-up/registerAction";
+import registerAction, { registerGoogleAction } from "@/app/(auth)/sign-up/registerAction";
 import { Toaster, toast } from "sonner";
 import { useRouter } from "next/navigation";
+import GoogleIcon from "@/components/ui/icons/google-icon";
 
 const inputs = [
   {
@@ -44,17 +45,21 @@ export default function SignUp() {
     router.push("/");
   };
 
+  const googleSignIn = async () => {
+    await registerGoogleAction();
+  }
+
   return (
     <Card className="w-96">
       <CardHeader>
-        <CardTitle className="text-3xl">Cadastro</CardTitle>
+        <CardTitle className="text-3xl font-bold">Cadastro</CardTitle>
       </CardHeader>
       <CardContent>
         <Form action={onSubmit}>
           {inputs.map((input) => (
             <div key={input.name}>
               <Label
-                className="text-xl mb-2"
+                className="mb-2"
                 htmlFor={input.name}
               >
                 {input.label}
@@ -70,13 +75,25 @@ export default function SignUp() {
           ))}
           <Button
             type="submit"
-            className="text-xl font-normal p-2 cursor-pointer w-full mt-4"
+            className="cursor-pointer w-full mt-4"
+            size='lg'
           >
             Cadastrar
           </Button>
         </Form>
+        <Form action={googleSignIn} className="w-full mt-4">
+          <Button className="w-full cursor-pointer" size='lg' variant='outline'><GoogleIcon />Cadastrar com o Google</Button>
+        </Form>
         <Toaster />
       </CardContent>
+      <CardFooter>
+        <p className="text-sm text-center">
+          Já tem uma conta?{" "}
+          <a href="/log-in" className="text-blue-500 hover:underline">
+            Entrar
+          </a>
+        </p>
+      </CardFooter>
     </Card>
   );
 }

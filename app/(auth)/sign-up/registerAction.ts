@@ -1,5 +1,6 @@
 'use server';
 
+import { signIn } from "@/auth";
 import db from "@/lib/db";
 import { hashSync } from "bcrypt-ts";
 
@@ -40,4 +41,13 @@ export default async function registerAction(formData: FormData) {
     console.error("Error creating user:", error);
     return { status: 500, message: "Internal server error" };
   }
+}
+
+export async function registerGoogleAction() {
+  await signIn("google", {
+    redirect: true,
+    callbackUrl: "/",
+  });
+
+  return { status: 200, message: "User logged in" };
 }
