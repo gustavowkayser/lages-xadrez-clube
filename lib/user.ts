@@ -17,3 +17,13 @@ export async function findUserByCredentials(email: string, password: string): Pr
 
   return null;
 }
+
+export async function findUserByEmail(email: string): Promise<User | null> {
+  const user = await db.user.findFirst({
+    where: {
+      email: email,
+    },
+  });
+
+  return user;
+}
