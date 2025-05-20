@@ -3,6 +3,7 @@ import Credentials from "next-auth/providers/credentials";
 import { findUserByCredentials } from "./lib/user";
 import GoogleProvider from "next-auth/providers/google";
 import db from "./lib/db";
+import { Role } from "@prisma/client";
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
   providers: [
@@ -40,11 +41,24 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
             email: user.email!,
             name: user.name as string,
             password: "",
+            role: Role.MEMBER,
           },
         });
       }
 
       return true;
+    },
+    async session({ session, token }) {
+      // opcional: adiciona id do usuário à sessão
+      const dbUser = await db.user.findUnique({
+        where: { email: session.user?.email! },
+      });
+
+      if (dbUser) {
+        session.user.role = dbUser.role;
+      }
+
+      return session;
     },
    }
 });
