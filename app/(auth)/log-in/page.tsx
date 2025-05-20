@@ -5,17 +5,11 @@ import Form from "next/form";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
-import registerAction from "@/app/(auth)/sign-up/registerAction";
+import loginAction from "@/app/(auth)/log-in/loginAction";
 import { Toaster, toast } from "sonner";
 import { useRouter } from "next/navigation";
 
 const inputs = [
-  {
-    label: "Nome",
-    placeholder: "Nome",
-    name: "name",
-    type: "text",
-  },
   {
     label: "E-mail",
     placeholder: "E-mail",
@@ -30,11 +24,11 @@ const inputs = [
   },
 ];
 
-export default function SignUp() {
+export default function LogIn() {
   const router = useRouter();
 
   const onSubmit = async (formData: FormData) => {
-    const user = await registerAction(formData);
+    const user = await loginAction(formData);
 
     if (user.status !== 200) {
       toast.error(user.message);
@@ -47,7 +41,7 @@ export default function SignUp() {
   return (
     <Card className="w-96">
       <CardHeader>
-        <CardTitle className="text-3xl">Cadastro</CardTitle>
+        <CardTitle className="text-3xl">Log-In</CardTitle>
       </CardHeader>
       <CardContent>
         <Form action={onSubmit}>
