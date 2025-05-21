@@ -43,11 +43,3 @@ export default async function registerAction(formData: FormData) {
   }
 }
 
-export async function registerGoogleAction() {
-  await signIn("google", {
-    redirect: true,
-    callbackUrl: "/",
-  });
-
-  return { status: 200, message: "User logged in" };
-}

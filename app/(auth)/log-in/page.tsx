@@ -1,6 +1,12 @@
 "use client";
 
-import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import Form from "next/form";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -8,8 +14,8 @@ import { Button } from "@/components/ui/button";
 import loginAction from "@/app/(auth)/log-in/loginAction";
 import { Toaster, toast } from "sonner";
 import { useRouter } from "next/navigation";
-import { registerGoogleAction } from "../sign-up/registerAction";
 import GoogleIcon from "@/components/ui/icons/google-icon";
+import { signIn } from "next-auth/react";
 
 const inputs = [
   {
@@ -40,10 +46,6 @@ export default function LogIn() {
     router.push("/");
   };
 
-  const googleSignIn = async () => {
-    await registerGoogleAction();
-  }
-
   return (
     <Card className="w-96">
       <CardHeader>
@@ -53,10 +55,7 @@ export default function LogIn() {
         <Form action={onSubmit}>
           {inputs.map((input) => (
             <div key={input.name}>
-              <Label
-                className="mb-2"
-                htmlFor={input.name}
-              >
+              <Label className="mb-2" htmlFor={input.name}>
                 {input.label}
               </Label>
               <Input
@@ -71,14 +70,20 @@ export default function LogIn() {
           <Button
             type="submit"
             className="cursor-pointer w-full mt-4"
-            size='lg'
+            size="lg"
           >
             Entrar
           </Button>
         </Form>
-        <Form action={googleSignIn} className="w-full mt-4">
-          <Button className="w-full cursor-pointer" size='lg' variant='outline'><GoogleIcon />Entrar com o Google</Button>
-        </Form>
+        <Button
+          className="w-full cursor-pointer mt-4"
+          size="lg"
+          variant="outline"
+          onClick={() => signIn("google", { callbackUrl: "/" })}
+        >
+          <GoogleIcon />
+          Entrar com o Google
+        </Button>
         <Toaster />
       </CardContent>
       <CardFooter>
